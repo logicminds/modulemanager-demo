@@ -1,4 +1,4 @@
-# Product Requirements Document: Voxpupuli Module Manager
+# Voxpupuli Module Manager
 
 ## 1. Executive Summary
 
