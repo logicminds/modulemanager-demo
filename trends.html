@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trends - Voxpupuli Module Manager</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>Voxpupuli Module Manager</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Dashboard</a>
+                <a href="trends.html" class="active">Trends</a>
+                <a href="alerts.html">Alerts</a>
+                <a href="reports.html">Reports</a>
+                <button class="btn-primary" onclick="window.location.href='index.html'; return false;">Transfer Module</button>
+            </div>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="dashboard-header">
+            <div class="header-content">
+                <h2>Trends Over Time</h2>
+                <p class="subtitle">Historical data and analytics for all Voxpupuli modules</p>
+            </div>
+        </div>
+
+        <div class="trends-section">
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h4>Total Downloads (Last 3 Years)</h4>
+                    <canvas id="downloadsChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h4>Module Health Status</h4>
+                    <canvas id="healthChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h4>Open Issues & PRs</h4>
+                    <canvas id="issuesChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h4>Modulesync Compliance</h4>
+                    <canvas id="modulesyncChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="trends-section">
+            <h3 class="section-title">Additional Metrics</h3>
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h4>Module Growth</h4>
+                    <canvas id="growthChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h4>Version Releases</h4>
+                    <canvas id="releasesChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h4>Contributor Activity</h4>
+                    <canvas id="contributorsChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h4>Dependency Health</h4>
+                    <canvas id="dependencyHealthChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="trends.js"></script>
+</body>
+</html>
+

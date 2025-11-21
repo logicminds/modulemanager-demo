@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voxpupuli Module Manager</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>Voxpupuli Module Manager</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="active">Dashboard</a>
+                <a href="trends.html">Trends</a>
+                <a href="alerts.html">Alerts</a>
+                <a href="reports.html">Reports</a>
+                <button class="btn-primary" onclick="showTransferWizard()">Transfer Module</button>
+            </div>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="dashboard-header">
+            <div class="header-content">
+                <h2>Module Dashboard</h2>
+                <p class="subtitle">310 modules tracked • 12 need attention</p>
+            </div>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-value">310</div>
+                <div class="stat-label">Total Modules</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">245</div>
+                <div class="stat-label">Healthy</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-value">53</div>
+                <div class="stat-label">Needs Attention</div>
+            </div>
+            <div class="stat-card critical">
+                <div class="stat-value">12</div>
+                <div class="stat-label">Critical</div>
+            </div>
+        </div>
+
+
+        <div class="module-controls">
+            <div class="view-toggle">
+                <button class="toggle-btn active" data-view="card" onclick="switchView('card')">
+                    <span>⊞</span> Cards
+                </button>
+                <button class="toggle-btn" data-view="list" onclick="switchView('list')">
+                    <span>☰</span> List
+                </button>
+            </div>
+            <div class="search-filter">
+                <input type="text" placeholder="Search modules..." class="search-input" oninput="filterModules(this.value)">
+                <select class="filter-select" onchange="filterByStatus(this.value)">
+                    <option value="all">All Status</option>
+                    <option value="healthy">Healthy</option>
+                    <option value="needs-attention">Needs Attention</option>
+                    <option value="critical">Critical</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="modules-container" class="modules-container card-view">
+            <!-- Modules will be inserted here by JavaScript -->
+        </div>
+    </main>
+
+    <!-- Transfer Module Wizard Modal -->
+    <div id="transfer-wizard" class="modal">
+        <div class="modal-content wizard">
+            <div class="wizard-header">
+                <h2>Transfer Module to Voxpupuli</h2>
+                <button class="close-btn" onclick="closeWizard()">×</button>
+            </div>
+            <div class="wizard-progress">
+                <div class="progress-step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Membership</div>
+                </div>
+                <div class="progress-step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Repository</div>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Preparation</div>
+                </div>
+                <div class="progress-step" data-step="4">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Config</div>
+                </div>
+                <div class="progress-step" data-step="5">
+                    <div class="step-number">5</div>
+                    <div class="step-label">Transfer</div>
+                </div>
+                <div class="progress-step" data-step="6">
+                    <div class="step-number">6</div>
+                    <div class="step-label">Admin</div>
+                </div>
+                <div class="progress-step" data-step="7">
+                    <div class="step-number">7</div>
+                    <div class="step-label">Tasks</div>
+                </div>
+                <div class="progress-step" data-step="8">
+                    <div class="step-number">8</div>
+                    <div class="step-label">Review</div>
+                </div>
+            </div>
+            <div class="wizard-body">
+                <div class="wizard-step active" data-step="1">
+                    <h3>Membership Verification</h3>
+                    <p>Verify that you are a member of the Voxpupuli GitHub organization.</p>
+                    <div class="check-item">
+                        <input type="checkbox" id="membership-check" checked>
+                        <label for="membership-check">I am a member of the Voxpupuli GitHub organization</label>
+                    </div>
+                    <button class="btn-primary" onclick="nextStep(2)">Continue</button>
+                </div>
+                <div class="wizard-step" data-step="2">
+                    <h3>Repository Selection</h3>
+                    <label>GitHub Repository URL</label>
+                    <input type="text" id="repo-url" placeholder="https://github.com/username/repo-name" class="form-input" onchange="updateReviewData()">
+                    <p class="help-text">Enter the URL of the repository you want to transfer to Voxpupuli</p>
+                    <button class="btn-secondary" onclick="prevStep(1)">Back</button>
+                    <button class="btn-primary" onclick="nextStep(3)">Continue</button>
+                </div>
+                <div class="wizard-step" data-step="3">
+                    <h3>Repository Preparation Checklist</h3>
+                    <div class="checklist">
+                        <div class="check-item">
+                            <input type="checkbox" id="check-issues" checked>
+                            <label for="check-issues">GitHub Issues are enabled</label>
+                        </div>
+                        <div class="check-item">
+                            <input type="checkbox" id="check-pdk">
+                            <label for="check-pdk">Remove PDK .sync.yaml if it exists</label>
+                        </div>
+                        <div class="check-item">
+                            <input type="checkbox" id="check-license" checked>
+                            <label for="check-license">LICENSE file exists and matches metadata.json</label>
+                        </div>
+                        <div class="check-item">
+                            <input type="checkbox" id="check-fork">
+                            <label for="check-fork">Detach from fork network if repository is a fork</label>
+                        </div>
+                    </div>
+                    <button class="btn-secondary" onclick="prevStep(2)">Back</button>
+                    <button class="btn-primary" onclick="nextStep(4)">Continue</button>
+                </div>
+                <div class="wizard-step" data-step="4">
+                    <h3>Transfer Configuration</h3>
+                    <label>Module Name</label>
+                    <input type="text" id="module-name" placeholder="puppet-example" class="form-input" onchange="updateReviewData()">
+                    <label>Description</label>
+                    <textarea id="module-desc" class="form-input" rows="3" placeholder="Brief description of the module"></textarea>
+                    <label>Initial Maintainers</label>
+                    <input type="text" id="maintainers" placeholder="username1, username2" class="form-input">
+                    <button class="btn-secondary" onclick="prevStep(3)">Back</button>
+                    <button class="btn-primary" onclick="nextStep(5)">Continue</button>
+                </div>
+                <div class="wizard-step" data-step="5">
+                    <h3>Transfer Repository</h3>
+                    <p>You will now transfer your repository to the Voxpupuli organization.</p>
+                    <div class="info-box">
+                        <p><strong>Note:</strong> This action will transfer ownership of your repository to Voxpupuli. Make sure you have completed all preparation steps.</p>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="confirm-transfer" required>
+                        <label for="confirm-transfer">I understand that this will transfer my repository to Voxpupuli</label>
+                    </div>
+                    <button class="btn-secondary" onclick="prevStep(4)">Back</button>
+                    <button class="btn-primary" onclick="executeTransfer()">Transfer Repository</button>
+                </div>
+                <div class="wizard-step" data-step="6">
+                    <h3>Admin Tasks Required</h3>
+                    <p>After transfer, admins will need to complete these tasks:</p>
+                    <div class="checklist">
+                        <div class="check-item">
+                            <input type="checkbox" id="admin-webhooks" disabled>
+                            <label for="admin-webhooks">Verify all webhooks are disabled</label>
+                        </div>
+                        <div class="check-item">
+                            <input type="checkbox" id="admin-branches" disabled>
+                            <label for="admin-branches">Enable "Automatically delete head branches"</label>
+                        </div>
+                        <div class="check-item">
+                            <input type="checkbox" id="admin-team" disabled>
+                            <label for="admin-team">Add collaborators team with Write permissions</label>
+                        </div>
+                        <div class="check-item">
+                            <input type="checkbox" id="admin-forge" disabled>
+                            <label for="admin-forge">Update forge.puppet.com secret access</label>
+                        </div>
+                    </div>
+                    <p class="help-text">These tasks will be tracked and assigned to admins automatically.</p>
+                    <button class="btn-secondary" onclick="prevStep(5)">Back</button>
+                    <button class="btn-primary" onclick="nextStep(7)">Continue</button>
+                </div>
+                <div class="wizard-step" data-step="7">
+                    <h3>Post-Transfer Tasks</h3>
+                    <p>After admin tasks are completed, you'll need to:</p>
+                    <div class="checklist">
+                        <div class="check-item">
+                            <input type="checkbox" id="task-modulesync" disabled>
+                            <label for="task-modulesync">Add module to modulesync_config</label>
+                        </div>
+                        <div class="check-item">
+                            <input type="checkbox" id="task-sync" disabled>
+                            <label for="task-sync">Execute modulesync for the module</label>
+                        </div>
+                        <div class="check-item">
+                            <input type="checkbox" id="task-release" disabled>
+                            <label for="task-release">Release first version under Vox Pupuli</label>
+                        </div>
+                        <div class="check-item">
+                            <input type="checkbox" id="task-deprecate" disabled>
+                            <label for="task-deprecate">Create Forge issue to deprecate old module</label>
+                        </div>
+                        <div class="check-item">
+                            <input type="checkbox" id="task-blog" disabled>
+                            <label for="task-blog">Write blog post about the migration</label>
+                        </div>
+                        <div class="check-item">
+                            <input type="checkbox" id="task-mailing" disabled>
+                            <label for="task-mailing">Send notification to mailing list</label>
+                        </div>
+                    </div>
+                    <p class="help-text">These tasks will be tracked in your transfer request.</p>
+                    <button class="btn-secondary" onclick="prevStep(6)">Back</button>
+                    <button class="btn-primary" onclick="nextStep(8)">Continue</button>
+                </div>
+                <div class="wizard-step" data-step="8">
+                    <h3>Review & Submit</h3>
+                    <div class="review-summary">
+                        <h4>Transfer Summary</h4>
+                        <p><strong>Repository:</strong> <span id="review-repo">-</span></p>
+                        <p><strong>Module Name:</strong> <span id="review-name">-</span></p>
+                        <p><strong>Preparation Status:</strong> <span id="review-prep">-</span></p>
+                        <p><strong>Transfer Request ID:</strong> <span id="transfer-id">-</span></p>
+                    </div>
+                    <div class="info-box">
+                        <p>Your transfer request will be submitted and tracked. You can view the status in your transfer requests dashboard.</p>
+                    </div>
+                    <button class="btn-secondary" onclick="prevStep(7)">Back</button>
+                    <button class="btn-primary" onclick="submitTransferRequest()">Submit Transfer Request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Module Detail Modal -->
+    <div id="module-detail" class="modal">
+        <div class="modal-content detail">
+            <div class="detail-header">
+                <h2 id="detail-name">puppet-nginx</h2>
+                <button class="close-btn" onclick="closeDetail()">×</button>
+            </div>
+            <div class="detail-body">
+                <div class="detail-tabs">
+                    <button class="tab-btn active" onclick="showTab('overview')">Overview</button>
+                    <button class="tab-btn" onclick="showTab('issues')">
+                        Issues
+                        <span class="tab-badge" id="issues-badge">0</span>
+                    </button>
+                    <button class="tab-btn" onclick="showTab('dependencies')">
+                        Dependencies
+                        <span class="tab-badge" id="dependencies-badge">0</span>
+                    </button>
+                    <button class="tab-btn" onclick="showTab('stats')">Statistics</button>
+                </div>
+                <div class="tab-content active" id="tab-overview">
+                    <div class="detail-grid">
+                        <div class="detail-section">
+                            <h3>Module Information</h3>
+                            <p><strong>Description:</strong> Puppet Module to manage NGINX on various UNIXes</p>
+                            <p><strong>GitHub:</strong> <a href="#">voxpupuli/puppet-nginx</a></p>
+                            <p><strong>Puppet Forge:</strong> <a href="#">puppetlabs/nginx</a></p>
+                            <p><strong>Current Version:</strong> 5.1.0</p>
+                            <p><strong>Last Release:</strong> 2024-11-15</p>
+                        </div>
+                        <div class="detail-section">
+                            <h3>Quick Stats</h3>
+                            <div class="stat-grid">
+                                <div class="mini-stat">
+                                    <div class="mini-stat-value">871</div>
+                                    <div class="mini-stat-label">Stars</div>
+                                </div>
+                                <div class="mini-stat">
+                                    <div class="mini-stat-value">471</div>
+                                    <div class="mini-stat-label">Forks</div>
+                                </div>
+                                <div class="mini-stat">
+                                    <div class="mini-stat-value">12</div>
+                                    <div class="mini-stat-label">Open Issues</div>
+                                </div>
+                                <div class="mini-stat">
+                                    <div class="mini-stat-value">5</div>
+                                    <div class="mini-stat-label">Open PRs</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="detail-section">
+                            <h3>Modulesync Status</h3>
+                            <div class="status-badge healthy">In Sync</div>
+                            <p><strong>Version:</strong> 10.4.0</p>
+                            <p><strong>Last Sync:</strong> 2024-11-10</p>
+                        </div>
+                        <div class="detail-section">
+                            <h3>Supported Platforms</h3>
+                            <div class="platform-tags">
+                                <span class="tag">Ubuntu 18.04+</span>
+                                <span class="tag">Debian 9+</span>
+                                <span class="tag">CentOS 7+</span>
+                                <span class="tag">RHEL 7+</span>
+                            </div>
+                            <p><strong>Puppet Versions:</strong> 6.0 - 8.0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content" id="tab-issues">
+                    <h3>GitHub Issues</h3>
+                    <div class="issue-list" id="issues-list">
+                        <!-- Issues will be populated by JavaScript -->
+                    </div>
+                </div>
+                <div class="tab-content" id="tab-dependencies">
+                    <h3>Dependencies</h3>
+                    <div class="dependency-list" id="dependencies-list">
+                        <!-- Dependencies will be populated by JavaScript -->
+                    </div>
+                </div>
+                <div class="tab-content" id="tab-stats">
+                    <h3>Download Statistics</h3>
+                    <div class="module-charts">
+                        <div class="module-chart-card">
+                            <h4>Downloads Over Time</h4>
+                            <canvas id="moduleDownloadsChart"></canvas>
+                        </div>
+                        <div class="module-chart-card">
+                            <h4>Downloads by Version</h4>
+                            <canvas id="moduleVersionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

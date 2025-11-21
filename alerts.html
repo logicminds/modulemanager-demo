@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerts - Voxpupuli Module Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>Voxpupuli Module Manager</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Dashboard</a>
+                <a href="trends.html">Trends</a>
+                <a href="alerts.html" class="active">Alerts</a>
+                <a href="reports.html">Reports</a>
+                <button class="btn-primary" onclick="window.location.href='index.html'; return false;">Transfer Module</button>
+            </div>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="dashboard-header">
+            <div class="header-content">
+                <h2>Alerts Center</h2>
+                <p class="subtitle">Active alerts and notifications for all modules</p>
+            </div>
+            <div class="header-actions">
+                <select class="filter-select" onchange="filterAlerts(this.value)">
+                    <option value="all">All Alerts</option>
+                    <option value="critical">Critical</option>
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                </select>
+                <select class="filter-select" onchange="filterByType(this.value)">
+                    <option value="all">All Types</option>
+                    <option value="security">Security</option>
+                    <option value="dependency">Dependency</option>
+                    <option value="modulesync">Modulesync</option>
+                    <option value="pr">Pull Request</option>
+                    <option value="issue">Issue</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-card critical">
+                <div class="stat-value">12</div>
+                <div class="stat-label">Critical Alerts</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-value">53</div>
+                <div class="stat-label">High Priority</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">89</div>
+                <div class="stat-label">Medium Priority</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">156</div>
+                <div class="stat-label">Total Alerts</div>
+            </div>
+        </div>
+
+        <div class="alerts-container">
+            <div class="alert-section">
+                <h3 class="section-title">Critical Alerts</h3>
+                <div id="critical-alerts" class="alert-list">
+                    <!-- Alerts will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="alert-section">
+                <h3 class="section-title">High Priority</h3>
+                <div id="high-alerts" class="alert-list">
+                    <!-- Alerts will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="alert-section">
+                <h3 class="section-title">Medium Priority</h3>
+                <div id="medium-alerts" class="alert-list">
+                    <!-- Alerts will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="alert-section">
+                <h3 class="section-title">Low Priority</h3>
+                <div id="low-alerts" class="alert-list">
+                    <!-- Alerts will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="alerts.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Voxpupuli Module Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>Voxpupuli Module Manager</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Dashboard</a>
+                <a href="trends.html">Trends</a>
+                <a href="alerts.html">Alerts</a>
+                <a href="reports.html" class="active">Reports</a>
+                <button class="btn-primary" onclick="window.location.href='index.html'; return false;">Transfer Module</button>
+            </div>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="dashboard-header">
+            <div class="header-content">
+                <h2>Reports</h2>
+                <p class="subtitle">Comprehensive reports and analytics</p>
+            </div>
+        </div>
+
+        <div class="reports-grid">
+            <div class="report-card">
+                <h3>Module Health Report</h3>
+                <p class="report-description">Overall health status of all modules with detailed breakdown</p>
+                <div class="report-stats">
+                    <div class="report-stat">
+                        <div class="report-stat-value">245</div>
+                        <div class="report-stat-label">Healthy</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="report-stat-value">53</div>
+                        <div class="report-stat-label">Needs Attention</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="report-stat-value">12</div>
+                        <div class="report-stat-label">Critical</div>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="viewReport('health')">View Report</button>
+            </div>
+
+            <div class="report-card">
+                <h3>Maintenance Backlog</h3>
+                <p class="report-description">Outstanding work and prioritized tasks across all modules</p>
+                <div class="report-stats">
+                    <div class="report-stat">
+                        <div class="report-stat-value">156</div>
+                        <div class="report-stat-label">Open Issues</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="report-stat-value">89</div>
+                        <div class="report-stat-label">Open PRs</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="report-stat-value">23</div>
+                        <div class="report-stat-label">High Priority</div>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="viewReport('backlog')">View Report</button>
+            </div>
+
+            <div class="report-card">
+                <h3>Modulesync Compliance</h3>
+                <p class="report-description">Modulesync version and sync status across all modules</p>
+                <div class="report-stats">
+                    <div class="report-stat">
+                        <div class="report-stat-value">280</div>
+                        <div class="report-stat-label">In Sync</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="report-stat-value">30</div>
+                        <div class="report-stat-label">Out of Sync</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="report-stat-value">90%</div>
+                        <div class="report-stat-label">Compliance</div>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="viewReport('modulesync')">View Report</button>
+            </div>
+
+            <div class="report-card">
+                <h3>Dependency Compliance</h3>
+                <p class="report-description">Dependency health and update status across all modules</p>
+                <div class="report-stats">
+                    <div class="report-stat">
+                        <div class="report-stat-value">1,200</div>
+                        <div class="report-stat-label">Up to Date</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="report-stat-value">180</div>
+                        <div class="report-stat-label">Outdated</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="report-stat-value">25</div>
+                        <div class="report-stat-label">Deprecated</div>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="viewReport('dependencies')">View Report</button>
+            </div>
+
+            <div class="report-card">
+                <h3>Security Compliance</h3>
+                <p class="report-description">Security vulnerabilities and compliance status</p>
+                <div class="report-stats">
+                    <div class="report-stat">
+                        <div class="report-stat-value">298</div>
+                        <div class="report-stat-label">Secure</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="report-stat-value">10</div>
+                        <div class="report-stat-label">Vulnerabilities</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="report-stat-value">2</div>
+                        <div class="report-stat-label">Critical</div>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="viewReport('security')">View Report</button>
+            </div>
+
+            <div class="report-card">
+                <h3>Download & Usage</h3>
+                <p class="report-description">Module popularity, downloads, and version adoption</p>
+                <div class="report-stats">
+                    <div class="report-stat">
+                        <div class="report-stat-value">5.2M</div>
+                        <div class="report-stat-label">Total Downloads</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="report-stat-value">45</div>
+                        <div class="report-stat-label">Top Modules</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="report-stat-value">+12%</div>
+                        <div class="report-stat-label">Growth</div>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="viewReport('downloads')">View Report</button>
+            </div>
+        </div>
+
+        <div class="report-detail" id="report-detail" style="display: none;">
+            <div class="report-detail-header">
+                <h3 id="report-detail-title">Report Details</h3>
+                <button class="close-btn" onclick="closeReport()">×</button>
+            </div>
+            <div class="report-detail-body" id="report-detail-body">
+                <!-- Report content will be populated here -->
+            </div>
+        </div>
+    </main>
+
+    <script src="reports.js"></script>
+</body>
+</html>
+
